@@ -1,0 +1,70 @@
+#:kivy 1.8.0
+
+<DigitDisplay>:
+    font_size: 50
+    on_touch_down: app.on_display_touch_down(self, args[1])
+
+<Container>:
+    orientation: 'vertical'
+
+    TimeDisplay:
+        id: td
+        DigitDisplay:
+            _id: "daylabel"
+            size_hint: 0.3, 1
+            text: str(app.day_value).zfill(3)
+            value: app.day_value
+            modulo: 1000
+            background_color: 1,.5,0,1
+
+        DigitDisplay:
+            _id: "hourlabel"
+            size_hint: 0.2, 1
+            text: str(app.hour_value).zfill(2)
+            value: app.hour_value
+            modulo: 24
+            background_color: 0,1,0,1
+
+        DigitDisplay:
+            _id: "minlabel"
+            size_hint: 0.2, 1
+            text: str(app.min_value).zfill(2)
+            value: app.min_value
+            modulo: 60
+            background_color: 1,.5,0,1
+
+        DigitDisplay:
+            _id: "seclabel"
+            size_hint: 0.2, 1
+            text: str(app.sec_value).zfill(2)
+            value: app.sec_value
+            modulo: 60
+            background_color: 0,1,0,1
+
+    Controller:
+        id: ctr
+        alarm_btn: alarm
+        shutdown_btn: shutdown
+        Label:
+            font_size: 30
+            text: app.alarm_date
+            size_hint: 0.5, 1
+        ToggleButton:
+            id: alarm
+            font_size: 20
+            text: 'alarm'
+            size_hint: 0.25, 1
+            disabled: app.total_secs_left <= 0
+            on_state: 
+                app.alarm_selected = args[1] == 'down'
+                app.check_countdown_status()
+
+        ToggleButton:
+            id: shutdown
+            font_size: 20
+            text: 'Shutdown'
+            size_hint: 0.25, 1
+            disabled: (not app.countdown) and app.total_secs_left < 5
+            on_state: 
+                app.shutdown_selected = args[1] == 'down'
+                app.check_countdown_status()
