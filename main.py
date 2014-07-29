@@ -30,7 +30,7 @@ class Controller(BoxLayout):
 class Container(StackLayout):
     pass
 
-class ClockTicker(App):
+class SandKeeper(App):
     day_value = NumericProperty(0)
     hour_value = NumericProperty(1)
     min_value = NumericProperty(0)
@@ -127,4 +127,4 @@ if __name__ == '__main__':
     Config.set('graphics', 'width', '323')
     Config.set('graphics', 'height', '200')
     Config.set("input", "mouse", "mouse,disable_multitouch")
-    ClockTicker().run()
+    SandKeeper().run()
