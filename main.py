@@ -59,6 +59,7 @@ class ClockTicker(App):
             self.total_secs_left = self.day_value * 86400 + \
                                 self.hour_value * 3600 + \
                                 self.min_value * 60 + self.sec_value
+            self.update_alarm_date()
 
     def update_counter(self):
         """ Returns total number of seconds left """
