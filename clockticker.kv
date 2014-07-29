@@ -51,7 +51,7 @@
             size_hint: 0.5, 1
         ToggleButton:
             id: alarm
-            font_size: 20
+            font_size: 16
             text: 'alarm'
             size_hint: 0.25, 1
             disabled: app.total_secs_left <= 0
@@ -61,8 +61,8 @@
 
         ToggleButton:
             id: shutdown
-            font_size: 20
-            text: 'Shutdown'
+            font_size: 16
+            text: 'shutdown'
             size_hint: 0.25, 1
             disabled: (not app.countdown) and app.total_secs_left < 5
             on_state: 

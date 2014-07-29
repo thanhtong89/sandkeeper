@@ -8,6 +8,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from functools import partial
 from kivy.config import Config
+from kivy.core.audio import SoundLoader
 
 import datetime
 
@@ -31,6 +32,8 @@ class ClockTicker(App):
     sec_value = NumericProperty(0) 
     alarm_date = StringProperty(datetime.datetime.now().strftime("%c"))
     total_secs_left = NumericProperty(3600)
+    
+    alarm_sound = SoundLoader.load('analog-alarm-clock.wav')
 
     # Alarm mode alarms upon time's up.
     # Shutdown simply shuts down (windows only for now?)
@@ -80,6 +83,10 @@ class ClockTicker(App):
         self.alarm_date = (datetime.datetime.now() + delta).strftime("%c").replace(" ", "\n")
         print "alarm_date is now ", self.alarm_date
 
+    def take_actions(self):
+        if (self.alarm_selected):
+           self.alarm_sound.play() 
+
     def update(self):
         """ Runs every second """
         controller = self.root.ids.ctr
@@ -87,7 +94,7 @@ class ClockTicker(App):
             self.update_alarm_date()
         else:
             if (self.update_counter() == 0):
-                print "Time's up!"
+                self.take_actions()                
                 self.countdown = False
                 controller.alarm_btn.state = 'normal'
                 controller.shutdown_btn.state = 'normal'
