@@ -26,13 +26,13 @@ class Container(BoxLayout):
     pass
 
 class ClockTicker(App):
-    day_value = NumericProperty(0) 
-    hour_value = NumericProperty(1) 
-    min_value = NumericProperty(0) 
-    sec_value = NumericProperty(0) 
+    day_value = NumericProperty(0)
+    hour_value = NumericProperty(1)
+    min_value = NumericProperty(0)
+    sec_value = NumericProperty(0)
     alarm_date = StringProperty(datetime.datetime.now().strftime("%c"))
     total_secs_left = NumericProperty(3600)
-    
+
     alarm_sound = SoundLoader.load('analog-alarm-clock.wav')
 
     # Alarm mode alarms upon time's up.
@@ -85,7 +85,7 @@ class ClockTicker(App):
 
     def take_actions(self):
         if (self.alarm_selected):
-           self.alarm_sound.play() 
+           self.alarm_sound.play()
 
     def update(self):
         """ Runs every second """
@@ -94,7 +94,7 @@ class ClockTicker(App):
             self.update_alarm_date()
         else:
             if (self.update_counter() == 0):
-                self.take_actions()                
+                self.take_actions()
                 self.countdown = False
                 controller.alarm_btn.state = 'normal'
                 controller.shutdown_btn.state = 'normal'
