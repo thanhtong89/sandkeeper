@@ -88,13 +88,11 @@ class ClockTicker(App):
 
     def check_countdown_status(self):
         self.countdown = (self.shutdown_selected or self.alarm_selected)
-        print "countdown is now ", self.countdown
 
     def update_alarm_date(self):
         delta = datetime.timedelta(self.day_value, seconds=self.sec_value,\
                                minutes=self.min_value,hours=self.hour_value)
         self.alarm_date = (datetime.datetime.now() + delta).strftime("%c")
-        print "alarm_date is now ", self.alarm_date
 
     def shutdown_windows(self, options):
         return subprocess.call(["shutdown.exe"] + options)
@@ -102,7 +100,6 @@ class ClockTicker(App):
     def take_actions(self):
         if (self.alarm_selected):
             self.alarm_sound.play()
-            print self.alarm_sound.state == 'play'
         if (self.shutdown_selected):
             if (self.shutdown_current_mode == SHUTDOWN_MODE):
                self.shutdown_windows(['/s'])
