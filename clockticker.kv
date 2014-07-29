@@ -5,10 +5,11 @@
     on_touch_down: app.on_display_touch_down(self, args[1])
 
 <Container>:
-    orientation: 'vertical'
+    orientation: 'lr-tb'
 
     TimeDisplay:
         id: td
+        size_hint: 1, .4
         DigitDisplay:
             _id: "daylabel"
             size_hint: 0.3, 1
@@ -41,16 +42,19 @@
             modulo: 60
             background_color: 0,1,0,1
 
+    Label:
+        font_size: 30
+        text: app.alarm_date
+        size_hint: 1, .2
+
     Controller:
         id: ctr
         alarm_btn: alarm
         shutdown_btn: shutdown
-        Label:
-            font_size: 30
-            text: app.alarm_date
-            size_hint: 0.5, 1
+        size_hint: 1, .4
         ToggleButton:
             id: alarm
+            group: 'togglebuttons'
             font_size: 16
             size_hint: 0.25, 1
             disabled: app.total_secs_left <= 0
@@ -66,6 +70,7 @@
 
         ToggleButton:
             id: shutdown
+            group: 'togglebuttons'
             font_size: 16
             size_hint: 0.25, 1
             disabled: (not app.countdown) and app.total_secs_left < 5

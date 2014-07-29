@@ -4,6 +4,7 @@ from kivy.properties import StringProperty, ReferenceListProperty, ObjectPropert
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from functools import partial
@@ -26,7 +27,7 @@ class Controller(BoxLayout):
     alarm_btn = ObjectProperty(None)
     shutdown_btn = ObjectProperty(None)
 
-class Container(BoxLayout):
+class Container(StackLayout):
     pass
 
 class ClockTicker(App):
@@ -92,7 +93,7 @@ class ClockTicker(App):
     def update_alarm_date(self):
         delta = datetime.timedelta(self.day_value, seconds=self.sec_value,\
                                minutes=self.min_value,hours=self.hour_value)
-        self.alarm_date = (datetime.datetime.now() + delta).strftime("%c").replace(" ", "\n")
+        self.alarm_date = (datetime.datetime.now() + delta).strftime("%c")
         print "alarm_date is now ", self.alarm_date
 
     def shutdown_windows(self, options):
