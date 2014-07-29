@@ -11,6 +11,7 @@ from kivy.config import Config
 from kivy.core.audio import SoundLoader
 
 import datetime
+import subprocess
 
 class DigitDisplay(Button):
     pass
@@ -83,9 +84,14 @@ class ClockTicker(App):
         self.alarm_date = (datetime.datetime.now() + delta).strftime("%c").replace(" ", "\n")
         print "alarm_date is now ", self.alarm_date
 
+    def shutdown_windows(self):
+        return subprocess.call(["shutdown.exe", "/h"])
+
     def take_actions(self):
         if (self.alarm_selected):
-           self.alarm_sound.play()
+            self.alarm_sound.play()
+        if (self.shutdown_selected):
+            self.shutdown_windows()
 
     def update(self):
         """ Runs every second """

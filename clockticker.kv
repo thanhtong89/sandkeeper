@@ -59,7 +59,7 @@
                 app.check_countdown_status()
             Image:
                 source: 'bell.png'
-                y: self.parent.y + .125 * self.parent.height/4
+                y: self.parent.y + .125 * self.parent.height
                 x: self.parent.x + .125 * self.parent.width
                 size: self.parent.width * 0.75, self.parent.height * 0.75
                 mipmap: True
@@ -67,9 +67,14 @@
         ToggleButton:
             id: shutdown
             font_size: 16
-            text: 'shutdown'
             size_hint: 0.25, 1
             disabled: (not app.countdown) and app.total_secs_left < 5
             on_state:
                 app.shutdown_selected = args[1] == 'down'
                 app.check_countdown_status()
+            Image:
+                source: 'power.png'
+                y: self.parent.y + .125 * self.parent.height
+                x: self.parent.x + .125 * self.parent.width
+                size: self.parent.width * 0.75, self.parent.height * 0.75
+                mipmap: True
