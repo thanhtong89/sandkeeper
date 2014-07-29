@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import StringProperty, ReferenceListProperty, ObjectProperty, NumericProperty, BooleanProperty
+from kivy.properties import StringProperty, ReferenceListProperty, ObjectProperty, NumericProperty, BooleanProperty, DictProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
@@ -12,7 +12,10 @@ from kivy.core.audio import SoundLoader
 
 import datetime
 import subprocess
+import time
 
+SHUTDOWN_MODE = 0
+HIBERNATE_MODE = 1
 class DigitDisplay(Button):
     pass
 
@@ -40,9 +43,17 @@ class ClockTicker(App):
     # Shutdown simply shuts down (windows only for now?)
     alarm_selected = BooleanProperty(False)
     shutdown_selected = BooleanProperty(False)
-
+    shutdown_modes = DictProperty({ SHUTDOWN_MODE : 'power.png',
+                                    HIBERNATE_MODE : 'hibernate.png' })
+    shutdown_current_mode = NumericProperty(0)
     # countdown is true iff at least an action is selected.
     countdown = BooleanProperty(False)
+
+    def on_shutdown_touch_down(self, btn, touch):
+        if (btn.collide_point(*touch.pos)):
+            if (touch.button in ['scrolldown', 'scrollup']):
+                self.shutdown_current_mode = (self.shutdown_current_mode + 1) % \
+                                                        len(self.shutdown_modes)
 
     def on_display_touch_down(self, display, touch):
         if (self.countdown):
@@ -84,14 +95,18 @@ class ClockTicker(App):
         self.alarm_date = (datetime.datetime.now() + delta).strftime("%c").replace(" ", "\n")
         print "alarm_date is now ", self.alarm_date
 
-    def shutdown_windows(self):
-        return subprocess.call(["shutdown.exe", "/h"])
+    def shutdown_windows(self, options):
+        return subprocess.call(["shutdown.exe"] + options)
 
     def take_actions(self):
         if (self.alarm_selected):
             self.alarm_sound.play()
+            print self.alarm_sound.state == 'play'
         if (self.shutdown_selected):
-            self.shutdown_windows()
+            if (self.shutdown_current_mode == SHUTDOWN_MODE):
+               self.shutdown_windows(['/s'])
+            elif (self.shutdown_current_mode == HIBERNATE_MODE):
+               self.shutdown_windows(['/h'])
 
     def update(self):
         """ Runs every second """
@@ -113,4 +128,5 @@ class ClockTicker(App):
 if __name__ == '__main__':
     Config.set('graphics', 'width', '323')
     Config.set('graphics', 'height', '200')
+    Config.set("input", "mouse", "mouse,disable_multitouch")
     ClockTicker().run()

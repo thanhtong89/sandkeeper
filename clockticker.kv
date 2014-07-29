@@ -72,8 +72,9 @@
             on_state:
                 app.shutdown_selected = args[1] == 'down'
                 app.check_countdown_status()
+            on_touch_down: app.on_shutdown_touch_down(self, args[1])
             Image:
-                source: 'power.png'
+                source: app.shutdown_modes[app.shutdown_current_mode]
                 y: self.parent.y + .125 * self.parent.height
                 x: self.parent.x + .125 * self.parent.width
                 size: self.parent.width * 0.75, self.parent.height * 0.75
